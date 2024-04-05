@@ -2,7 +2,7 @@ import { describe, test } from 'mocha'
 import assert from 'assert'
 import fs from 'fs'
 import knex from 'knex'
-import config from './knexfile.js'
+import config from '../knexfile.js'
 
 describe('Day 1 Exercise 1', function () {
   test('the db.sqlite file should exist in the db folder', function (done) {

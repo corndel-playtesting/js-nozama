@@ -1,10 +1,20 @@
 import { describe, test } from 'mocha'
 import assert from 'assert'
 import fs from 'fs'
+import { fileURLToPath } from 'url'
 import knex from 'knex'
-import config from '../knexfile.js'
 
-describe('Day 1 Exercise 1', function () {
+const url = new URL('../../db/db.sqlite', import.meta.url)
+
+const config = {
+  client: 'sqlite3',
+  connection: {
+    filename: fileURLToPath(url)
+  },
+  useNullAsDefault: true
+}
+
+describe('Database connection', function () {
   test('the db.sqlite file should exist in the db folder', function (done) {
     fs.access(config.connection.filename, fs.constants.F_OK, err => {
       if (err) {

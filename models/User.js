@@ -8,7 +8,10 @@ class User {
   }
 
   static async findById(id) {
-    // TODO: finish this method
+    const query =
+      'select id, username, firstName, lastName, email, avatar from users where id = ?'
+    const results = await db.raw(query, [id])
+    return results[0]
   }
 }
 

@@ -12,4 +12,12 @@ describe('Day 1 Exercise 3', function () {
     const user = await User.findById(13)
     assert.strictEqual(user.id, 13, 'User id should be 13')
   })
+
+  test('User.findById does not return the user password', async function () {
+    const user = await User.findById(13)
+    assert.ok(
+      !(password in user),
+      'Password should not be included in the result'
+    )
+  })
 })

@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS products (
     description TEXT NOT NULL,
     price REAL NOT NULL CHECK (price >= 0),
     stockQuantity INTEGER NOT NULL CHECK (stockQuantity >= 0),
-    imageURL TEXT NOT NULL
+    imageURL TEXT
 );
 
 CREATE TABLE IF NOT EXISTS users (

@@ -14,7 +14,7 @@ const config = {
   useNullAsDefault: true
 }
 
-describe('Database connection', function () {
+describe('Day 1 Exercise 1', function () {
   test('the db.sqlite file should exist in the db folder', function (done) {
     fs.access(config.connection.filename, fs.constants.F_OK, err => {
       if (err) {

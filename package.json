@@ -9,6 +9,8 @@
     "db:seed": "sqlite3 db/db.sqlite < db/migrations/2-seed.sql",
     "dev": "nodemon server/start.js",
     "start": "node server/start.js",
+    "test": "mocha --require ./tests/hooks.js ./tests/*",
+    "test:models": "mocha --require ./tests/hooks.js ./tests/models",
     "test:d1e1": "mocha ./tests/exercises/d1e1.test.js",
     "test:d1e2": "mocha --require ./tests/hooks.js ./tests/exercises/d1e2.test.js",
     "test:d1e3": "mocha --require ./tests/hooks.js ./tests/User.test.js",

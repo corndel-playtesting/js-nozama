@@ -1,0 +1,590 @@
+openapi: 3.0.0
+info:
+  title: Nozama API
+  description: API for Nozama, an e-commerce platform.
+  version: '1.0'
+  x-logo:
+    url: https://github.com/corndeladmin/swe-js-nozama-api/blob/main/assets/nozama-icon-wide.png?raw=true
+    altText: Nozama logo
+servers:
+  - url: http://localhost:5000
+    description: Development server
+tags:
+  - name: Product
+    description: Endpoints for product information and management.
+  - name: User
+    description: Endpoints related to user management and user data.
+  - name: Review
+    description: Endpoints for managing product reviews.
+paths:
+  /products:
+    get:
+      tags:
+        - Product
+      summary: Get a list of all products
+      description: Returns an array of all products in the database.
+      responses:
+        '200':
+          description: An array of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+              examples:
+                default_example:
+                  $ref: '#/components/examples/ProductList'
+    post:
+      tags:
+        - Product
+      summary: Add a new product
+      description: Adds a new product to the database.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+            examples:
+              default_example:
+                $ref: '#/components/examples/ProductPost'
+      responses:
+        '201':
+          description: Created product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+              examples:
+                default_example:
+                  $ref: '#/components/examples/ProductResponse'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+              examples:
+                default_example:
+                  value:
+                    error: Invalid request body.
+  /products/{productId}:
+    get:
+      tags:
+        - Product
+      summary: Get detailed information about a product
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the product to get
+          example: 34567
+      responses:
+        '200':
+          description: Detailed product information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+              examples:
+                default_example:
+                  $ref: '#/components/examples/ProductResponse'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+              examples:
+                default_example:
+                  value:
+                    error: Product not found.
+  /products/category/{categoryId}:
+    get:
+      tags:
+        - Product
+      summary: Get products by category
+      parameters:
+        - in: path
+          name: categoryId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the category
+          example: 3
+      responses:
+        '200':
+          description: An array of products in the specified category
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+              examples:
+                default_example:
+                  $ref: '#/components/examples/ProductList'
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+              examples:
+                default_example:
+                  value:
+                    error: Category not found.
+  /users:
+    post:
+      tags:
+        - User
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              default_example:
+                $ref: '#/components/examples/UserPost'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                default_example:
+                  $ref: '#/components/examples/UserResponse'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+              examples:
+                default_example:
+                  value:
+                    error: Invalid request body.
+  /users/{userId}:
+    delete:
+      tags:
+        - User
+      summary: Delete a user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to delete
+          example: 42
+      responses:
+        '204':
+          description: User deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                default_example:
+                  $ref: '#/components/examples/UserResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+              examples:
+                default_example:
+                  value:
+                    error: User not found.
+  /users/login:
+    post:
+      tags:
+        - User
+      summary: Log in to the system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                default_example:
+                  $ref: '#/components/examples/UserLogin'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+              examples:
+                default_example:
+                  value:
+                    error: Invalid username or password.
+  /products/{productId}/reviews:
+    parameters:
+      - in: path
+        name: productId
+        schema:
+          type: integer
+        required: true
+        description: Numeric ID of the product to get reviews for
+    get:
+      tags:
+        - Review
+      summary: Get all reviews for a product
+      responses:
+        '200':
+          description: An array of reviews for the specified product
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+              examples:
+                default_example:
+                  value:
+                    error: Product not found.
+    post:
+      tags:
+        - Review
+      summary: Create a new product review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - productId
+                - userId
+                - rating
+                - reviewText
+              properties:
+                productId:
+                  type: integer
+                  description: ID of the product being reviewed.
+                userId:
+                  type: integer
+                  description: ID of the user writing the review.
+                rating:
+                  type: integer
+                  description: Rating given to the product. Must be between 1 and 5.
+                reviewText:
+                  type: string
+                  description: Text of the review.
+      responses:
+        '201':
+          description: Review submitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+              examples:
+                default_example:
+                  value:
+                    error: Invalid request body.
+  /products/{productId}/reviews/average:
+    get:
+      tags:
+        - Review
+      summary: Get the average rating for a product
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the product to get the average rating for
+      responses:
+        '200':
+          description: The average rating for the specified product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  averageRating:
+                    type: number
+                    format: float
+                    description: The average rating for the product.
+              examples:
+                default_example:
+                  value:
+                    averageRating: 4.5
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+              examples:
+                default_example:
+                  value:
+                    error: Product not found.
+components:
+  schemas:
+    Product:
+      type: object
+      description: This schema represents a Product in the Nozama platform, detailing its pricing, stock, and descriptive information.
+      required:
+        - id
+        - name
+        - description
+        - price
+        - stockQuantity
+        - imageURL
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the product
+          readOnly: true
+        name:
+          type: string
+          description: Name of the product
+        description:
+          type: string
+          description: Description of the product
+        price:
+          type: number
+          format: float
+          description: Price of the product
+        stockQuantity:
+          type: integer
+          description: Number of items in stock
+        imageURL:
+          type: string
+          description: URL of the product image
+    User:
+      type: object
+      required:
+        - id
+        - username
+        - firstName
+        - lastName
+        - email
+        - password
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the user
+          readOnly: true
+        username:
+          type: string
+          description: User's unique username
+        firstName:
+          type: string
+          description: User's first name
+        lastName:
+          type: string
+          description: User's last name
+        email:
+          type: string
+          description: User's unique email address
+        avatar:
+          type: string
+          description: URL to the user's avatar image
+        password:
+          type: string
+          description: User's password
+          writeOnly: true
+    Category:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the category
+        name:
+          type: string
+          description: Name of the category
+    Review:
+      type: object
+      required:
+        - id
+        - productId
+        - userId
+        - rating
+        - reviewText
+        - reviewDate
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the review
+          readOnly: true
+        productId:
+          type: integer
+          format: int64
+          description: ID of the product being reviewed
+        userId:
+          type: integer
+          format: int64
+          description: ID of the user who wrote the review
+        rating:
+          type: integer
+          format: int32
+          description: Rating given to the product
+          minimum: 1
+          maximum: 5
+        reviewText:
+          type: string
+          description: Text of the review
+        reviewDate:
+          type: string
+          format: date-time
+          description: Date and time when the review was written
+          readOnly: true
+  examples:
+    ProductResponse:
+      summary: Example product response
+      value:
+        id: 34567
+        name: Superb Widget
+        description: A superb widget that simplifies your daily tasks.
+        price: 249.99
+        stockQuantity: 200
+        imageURL: https://example.com/images/superb-widget.jpg
+    ProductPost:
+      summary: Example product post
+      value:
+        name: Superb Widget
+        description: A superb widget that simplifies your daily tasks.
+        price: 249.99
+        stockQuantity: 200
+        imageURL: https://example.com/images/superb-widget.jpg
+    ProductList:
+      summary: Example product list
+      value:
+        - id: 12345
+          name: Amazing Gadget
+          description: An amazing gadget that improves your productivity.
+          price: 299.99
+          stockQuantity: 150
+          imageURL: https://example.com/images/amazing-gadget.jpg
+        - id: 67890
+          name: Incredible Device
+          description: An incredible device that enhances your experience.
+          price: 399.99
+          stockQuantity: 75
+          imageURL: https://example.com/images/incredible-device.jpg
+    UserPost:
+      summary: Example user post
+      value:
+        username: johndoe
+        firstName: John
+        lastName: Doe
+        email: johndoe@example.com
+        avatar: https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50
+        password: password123
+    UserResponse:
+      summary: Example user response
+      value:
+        id: 42
+        username: johndoe
+        firstName: John
+        lastName: Doe
+        email: johndoe@example.com
+        avatar: https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50
+    UserLogin:
+      summary: Example user login
+      value:
+        username: johndoe
+        password: password123
+    Category:
+      summary: Example category
+      value:
+        id: 3
+        name: Electronics
+    Review:
+      summary: Example review
+      value:
+        id: 12
+        productId: 34567
+        userId: 42
+        rating: 5
+        reviewText: This widget is amazing! It has made my life so much easier.
+        reviewDate: '2021-03-01T12:00:00Z'
+    ReviewList:
+      summary: Example review list
+      value:
+        - id: 12
+          productId: 12345
+          userId: 42
+          rating: 5
+          reviewText: This gadget is amazing!
+          reviewDate: '2021-03-01T12:00:00Z'
+        - id: 19
+          productId: 67890
+          userId: 4711
+          rating: 4
+          reviewText: This device is incredible!
+          reviewDate: '2021-03-02T09:00:00Z'

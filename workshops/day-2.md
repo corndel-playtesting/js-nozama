@@ -1,5 +1,4 @@
 # Day 2
 
-Focus on exposing the models through the API using express endpoints.
-
-Stretch to include limit and offset query parameters for pagination.
+Today's workshop is all about exposing the functionality of your application to
+the outside world. You'll do this by creating an API for the application.

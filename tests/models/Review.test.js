@@ -1,6 +1,7 @@
 import { describe, it, before, after } from 'mocha'
-import { strictEqual as assert } from 'assert'
+import assert from 'assert'
 import Review from '../../models/Review.js'
+import { ReviewResponse, ReviewsArray } from '../../spec/schemas.js'
 import db from '../../db/index.js'
 
 const testReview = {
@@ -23,14 +24,14 @@ describe('The Review model', () => {
     })
 
     it('should return the new review', async () => {
-      assert(newReview.reviewText, testReview.reviewText)
+      assert.strictEqual(newReview.reviewText, testReview.reviewText)
     })
 
     it('should create a new review in the database', async () => {
       const [review] = await db.raw('SELECT * FROM reviews WHERE id = ?', [
         newReview.id
       ])
-      assert(review.reviewText, testReview.reviewText)
+      assert.strictEqual(review.reviewText, testReview.reviewText)
     })
   })
 
@@ -41,13 +42,11 @@ describe('The Review model', () => {
       reviews = await Review.findByProductId(1)
     })
 
-    it('should return an array', () => {
-      assert(Array.isArray(reviews), true)
-    })
-
-    it('should contain reviews', () => {
-      for (let key in testReview) {
-        assert(key in reviews[0], true)
+    it('should return an array of reviews', () => {
+      try {
+        ReviewsArray.parse(reviews)
+      } catch (err) {
+        assert.fail(err.message)
       }
     })
   })
@@ -60,7 +59,7 @@ describe('The Review model', () => {
     })
 
     it('should return a number', () => {
-      assert(typeof averageRating, 'number')
+      assert.strictEqual(typeof averageRating, 'number')
     })
 
     it('should return a number between 1 and 5', () => {

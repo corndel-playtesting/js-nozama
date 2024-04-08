@@ -11,8 +11,11 @@ purchase products from a wide range of categories. Users can also leave reviews
 on products they have purchased, and view reviews left by other users.
 
 This repo contains the source code for the Nozama backend, which is built using
-Node.js, Express, and Knex. It is an API which allows the UI team to build any
-frontend they like, and connect to the backend using HTTP requests.
+Node.js, Express, and Knex. It is an API which allows developers to interact
+with the Nozama database, so they can build their own applications on top of it.
+
+Please note that this repo is for learning purposes. It contains plenty of bad
+security practices, and should not be used in production.
 
 ## Database schema
 
@@ -30,6 +33,9 @@ erDiagram
         string id PK
         string username
         string email
+        string firstName
+        string lastName
+        string avatar
         string password
     }
 
@@ -83,17 +89,19 @@ creating the API itself.
    npm install
    ```
 
-3. Create a `.env` file in the root of the project, and add the following
-
-   ```
-   PORT=5000
-   ```
-
-   This will set the port that the server will run on. It is recommended that
-   you do not change this.
-
 ## Deep dive
 
 Take a look in the `exercises` directory for information on the deep dives. As
 usual, Day 1 Exercise 1 is labeled `d1e1` and can be tested with
 `npm run test:d1e1`.
+
+You will find documentation URLs in the exercise files.
+
+### Day 1
+
+These exercises guide you through setting up the connection to the database, and
+creating the first few model methods.
+
+### Day 2
+
+The exercises give you some practice creating and configuring an Express app.

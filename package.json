@@ -7,16 +7,19 @@
   "scripts": {
     "db:reset": "sqlite3 db/db.sqlite < db/migrations/1-reset.sql",
     "db:seed": "sqlite3 db/db.sqlite < db/migrations/2-seed.sql",
-    "dev": "nodemon server/start.js",
-    "start": "node server/start.js",
-    "test": "mocha --require ./tests/hooks.js ./tests/*",
-    "test:models": "mocha --require ./tests/hooks.js ./tests/models",
+    "dev": "nodemon server/run.js",
+    "start": "node server/run.js",
+    "test": "mocha --require ./tests/hooks.js ./tests/models/*",
+    "test:exercises": "mocha --require ./tests/hooks.js ./tests/exercises/*",
     "test:d1e1": "mocha ./tests/exercises/d1e1.test.js",
     "test:d1e2": "mocha --require ./tests/hooks.js ./tests/exercises/d1e2.test.js",
-    "test:d1e3": "mocha --require ./tests/hooks.js ./tests/User.test.js",
+    "test:d1e3": "mocha --require ./tests/hooks.js ./tests/exercises/d1e3.test.js",
     "test:d2e1": "mocha ./tests/exercises/d2e1.test.js",
     "test:d2e2": "mocha ./tests/exercises/d2e2.test.js",
-    "test:d2e3": "mocha ./tests/exercises/d2e3.test.js"
+    "test:d2e3": "mocha ./tests/exercises/d3e1.test.js",
+    "test:d3e1": "mocha ./tests/exercises/d3e1.test.js",
+    "test:d3e2": "mocha ./tests/exercises/d3e2.test.js",
+    "test:d3e3": "mocha ./tests/exercises/d3e3.test.js"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +28,8 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "knex": "^3.1.0",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "mocha": "^10.4.0",

@@ -1,13 +1,15 @@
 import { describe, it, before, after } from 'mocha'
-import { strictEqual as assert } from 'assert'
+import assert from 'assert'
 import Product from '../../models/Product.js'
+import { ProductResponse, ProductsArray } from '../../spec/schemas.js'
 import db from '../../db/index.js'
 
 const testProduct = {
   name: 'Test Product',
   price: 100,
   description: 'This is a test product',
-  stockQuantity: 10
+  stockQuantity: 10,
+  imageURL: 'https://via.placeholder.com/150'
 }
 
 describe('The Product model', function () {
@@ -18,13 +20,11 @@ describe('The Product model', function () {
       products = await Product.findAll()
     })
 
-    it('returns an array', async function () {
-      assert(Array.isArray(products), true)
-    })
-
-    it('contains products', async function () {
-      for (let key in testProduct) {
-        assert(key in products[0], true)
+    it('should return an array of products', async function () {
+      try {
+        ProductsArray.parse(products)
+      } catch (error) {
+        assert.fail(error.message)
       }
     })
   })
@@ -36,14 +36,12 @@ describe('The Product model', function () {
       product = await Product.findById(5)
     })
 
-    it('returns an object and not an array', async function () {
-      assert(typeof product, 'object')
-
-      assert(Array.isArray(product), false)
-    })
-
-    it('returns the correct product', async function () {
-      assert(product.id, 5)
+    it('should return a product', async function () {
+      try {
+        ProductResponse.parse(product)
+      } catch (error) {
+        assert.fail(error.message)
+      }
     })
   })
 
@@ -55,21 +53,20 @@ describe('The Product model', function () {
     })
 
     after(async function () {
-      db.raw('DELETE FROM products WHERE name = ?', testProduct.name)
+      await db.raw('DELETE FROM products WHERE name = ?', testProduct.name)
     })
 
-    it('returns an object and not an array', async function () {
-      assert(typeof newProduct, 'object')
-      assert(Array.isArray(newProduct), false)
+    it('should return the product with an id', async function () {
+      try {
+        ProductResponse.parse(newProduct)
+      } catch (error) {
+        assert.fail(error.message)
+      }
     })
 
-    it('assigns an id to the product', async function () {
-      assert('id' in newProduct, true)
-    })
-
-    it('inserts the new product into the database', async function () {
+    it('should insert the new product into the database', async function () {
       const product = await Product.findById(newProduct.id)
-      assert(product.name, testProduct.name)
+      assert.strictEqual(product.name, testProduct.name)
     })
   })
 
@@ -80,13 +77,11 @@ describe('The Product model', function () {
       products = await Product.findByCategory(3)
     })
 
-    it('returns an array', async function () {
-      assert(Array.isArray(products), true)
-    })
-
-    it('contains products', async function () {
-      for (let key in testProduct) {
-        assert(key in products[0], true)
+    it('should return an array of products', async function () {
+      try {
+        ProductsArray.parse(products)
+      } catch (error) {
+        assert.fail(error.message)
       }
     })
   })

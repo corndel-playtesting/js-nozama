@@ -1,3 +1,6 @@
+//tech-docs.corndel.com/express/query-params.html
+// https://tech-docs.corndel.com/express/url-params.html
+
 import express from 'express'
 const app = express()
 

@@ -43,8 +43,3 @@ The recommended workflow is to:
 
 At any point, if you get stuck, move the item to "Blocked" and do some research,
 ask for help, or move on to another item.
-
-## Testing
-
-If you would like to add tests to your models, you can use the `test` directory.
-Use `tests/User.test.js` as a guide.

@@ -7,9 +7,9 @@ app.use(express.json())
 const router = Router()
 
 router.put('/username', (req, res) => {
-  const { username, password } = req.body
+  const { newUsername, password } = req.body
   try {
-    const account = Account.updateUsername(username, password)
+    const account = Account.updateUsername(newUsername, password)
     res.json(account)
   } catch (err) {
     res.status(err.code).json({ message: err.message })

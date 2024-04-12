@@ -9,5 +9,9 @@ const app = express()
  * Add a single GET /ping endpoint to app -
  * It should respond with the simple string "pong"
  */
+app.get('/ping', (req, res) => {
+  res.status(200).send('pong')
+})
+
 
 export default app

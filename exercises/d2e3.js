@@ -20,12 +20,15 @@ app.get('/alarms', (req, res) => {
   /**
    * Responds with all the alarms as a JSON response
    */
+  res.json(alarms)
 })
 
 app.get('/alarms/:index', (req, res) => {
   /**
    * Responds with the alarm at the given index
    */
+  const i = Number.parseInt(req.params.index)
+  res.json(alarms[i])
 })
 
 app.post('/alarms', (req, res) => {
@@ -34,6 +37,8 @@ app.post('/alarms', (req, res) => {
    * Push it to the end of the alarms array
    * Respond with a 201 status code
    */
+  alarms.push(req.body)
+  res.status(201).send()
 })
 
 export default app

@@ -17,6 +17,14 @@ router.put('/username', (req, res) => {
    * In case this fails, use try/catch to respond with the error
    * code and message found in the error
    */
+  const {newUsername, password} = req.body
+
+  try {
+    Account.updateUsername(newUsername, password)
+    res.status(200).send({ username: 'aragorn' })
+  } catch (e) {
+    res.status(e.code ?? 500).send(e.message ?? 'Server error')
+  }
 })
 
 app.use('/account', router)
